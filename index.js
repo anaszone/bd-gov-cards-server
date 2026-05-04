@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 5000;
 // ==========================================
 const corsOptions = {
    origin: [
-    "http://localhost:5173", 
+    "http://https://bd-gov-cards-client.vercel.app/", 
     "http://localhost:5176",
     "http://127.0.0.1:5173",
     "http://127.0.0.1:5176"

@@ -87,7 +87,7 @@ router.patch("/admin/update-status/:id", async (req, res) => {
                         
                         ${status === "approved" ? `
                             <p>Great news! You can now view and download your digital card from your dashboard.</p>
-                            <a href="http://localhost:5173/payment/success/${updated.transactionId}" 
+                            <a href="http://https://bd-gov-cards-client.vercel.app//payment/success/${updated.transactionId}" 
                                style="display: inline-block; padding: 12px 25px; background-color: #16a34a; color: white; text-decoration: none; border-radius: 8px; font-weight: bold;">
                                Download My Card
                             </a>

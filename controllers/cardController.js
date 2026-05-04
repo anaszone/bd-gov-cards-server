@@ -24,7 +24,7 @@ const applyForCard = async (req, res) => {
         // Response format fixed for frontend
         return res.status(200).json({ 
             success: true, 
-            url: `http://localhost:5173/payment/success/${transactionId}` 
+            url: `http://https://bd-gov-cards-client.vercel.app//payment/success/${transactionId}` 
         });
 
     } catch (error) {
@@ -42,7 +42,7 @@ const paymentSuccess = async (req, res) => {
         );
         
         if (result.modifiedCount > 0) {
-            res.redirect(`http://localhost:5173/payment/success/${tranId}`);
+            res.redirect(`http://https://bd-gov-cards-client.vercel.app//payment/success/${tranId}`);
         } else {
             res.status(404).json({ message: "Transaction not found" });
         }
