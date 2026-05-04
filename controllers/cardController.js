@@ -7,7 +7,6 @@ const applyForCard = async (req, res) => {
         const transactionId = uuidv4();
         const { applicantName, nid, phone, email, cardType, price } = req.body;
 
-        // Ekhane status 'pending' thakbe, jate Admin approve na kora porjonto card na dekhay
         const newApplication = new Application({
             applicantName,
             nid,
@@ -16,28 +15,27 @@ const applyForCard = async (req, res) => {
             cardType,
             price,
             transactionId: transactionId,
-            status: 'pending', // <--- ETA 'pending' HOBE
-            paymentStatus: 'paid' // Payment bypass logic thakle 'paid' thakte pare
+            status: 'pending',
+            paymentStatus: 'paid'
         });
 
         await newApplication.save();
 
-        // IP Address update kora holo (localhost)
-        res.send({ 
+        // Response format fixed for frontend
+        return res.status(200).json({ 
             success: true, 
             url: `http://localhost:5173/payment/success/${transactionId}` 
         });
 
     } catch (error) {
         console.error("❌ Backend Error:", error.message);
-        res.status(500).send({ message: error.message });
+        return res.status(500).json({ message: error.message });
     }
 };
 
 const paymentSuccess = async (req, res) => {
     const { tranId } = req.params;
     try {
-        // Payment success hole shudhu paymentStatus 'paid' hobe, status 'pending'-i thakbe
         const result = await Application.updateOne(
             { transactionId: tranId },
             { $set: { paymentStatus: 'paid' } } 
@@ -46,10 +44,10 @@ const paymentSuccess = async (req, res) => {
         if (result.modifiedCount > 0) {
             res.redirect(`http://localhost:5173/payment/success/${tranId}`);
         } else {
-            res.status(404).send("Transaction not found in database");
+            res.status(404).json({ message: "Transaction not found" });
         }
     } catch (error) {
-        res.status(500).send({ message: error.message });
+        res.status(500).json({ message: error.message });
     }
 };
 
@@ -57,12 +55,12 @@ const getSingleApplication = async (req, res) => {
     try {
         const application = await Application.findOne({ transactionId: req.params.tranId });
         if (application) {
-            res.send(application);
+            res.json(application);
         } else {
-            res.status(404).send({ message: "Application not found" });
+            res.status(404).json({ message: "Application not found" });
         }
     } catch (error) {
-        res.status(500).send({ message: error.message });
+        res.status(500).json({ message: error.message });
     }
 };
 
